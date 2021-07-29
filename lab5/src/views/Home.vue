@@ -1,18 +1,83 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="events">
+    <EventCard v-for="event in events" :key="event._id" :event="event" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import EventCard from '@/components/EventCard.vue'
+import EventService from '@/services/PassengerService.js'
+import { watchEffect } from '@vue/runtime-core'
+// import axios from 'axios'
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
+  name: 'EventList',
+  props: {
+    page: {
+      type: Number,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: true
+    }
   },
-};
+
+  components: {
+    EventCard // register it as a child component
+  },
+  data() {
+    return {
+      events: null,
+      totalEvents: 0 //added this to store totalEvents
+    }
+  },
+  created() {
+    watchEffect(() => {
+      EventService.getEvents(this.size, this.page)
+        .then((response) => {
+          this.events = response.data.data
+          this.totalEvents = response.headers['x-total-count'] // <-- Store it
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    })
+  },
+
+  computed: {
+    hasNextPage() {
+      //frist, calculate total pages
+      let totalPages = Math.ceil(this.totalEvents / this.size) //2 is event per page
+      //then check to see if the current page is less than th etotal page
+      return this.page < totalPages
+    }
+  }
+}
 </script>
+<style scoped>
+.events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  width: 290px;
+}
+
+.pagination a {
+  flex: 1;
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+#page-prev {
+  text-align: right;
+}
+
+#page-next {
+  text-align: right;
+}
+</style>
