@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import About from "../views/About.vue"
+import EventDetails from "../views/EventDetails"
 
 const routes = [
   {
@@ -19,6 +20,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: About
+  },
+  {
+    path:"/passenger/:id",
+    name: "EventDetails",
+    props: true,
+    component: EventDetails
   },
 
 ];
