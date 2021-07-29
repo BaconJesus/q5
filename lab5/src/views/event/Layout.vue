@@ -1,13 +1,22 @@
 <template>
   <div v-if="event">
-    <h1>{{ event.name }}</h1>
-    <img :src="event.airline.logo" />
-    <h3>Slogan: {{ event.airline.slogan }}</h3>
+    <h1>{{ event.title }}</h1>
+    <div id="nav">
+      <router-link :to="{ name: 'EventDetails', params: { id } }">
+        Details</router-link
+      >
+      |
+      <router-link :to="{ name: 'EventEdit', params: { id } }">
+        Edit</router-link
+      >
+    </div>
+    <router-view :event="event" />
   </div>
 </template>
 
 <script>
 import PassengerService from '@/services/PassengerService.js'
+
 export default {
   props: ['id'],
   data() {
@@ -16,7 +25,6 @@ export default {
     }
   },
   created() {
-    //fetch by id
     PassengerService.getPassenger(this.id)
       .then((response) => {
         this.event = response.data
