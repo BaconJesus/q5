@@ -43,13 +43,13 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path:'/404/:resourse',
-  //   name: '404Resourse',
-  //   component: NotFound,
-  //   props: true
+  {
+    path:'/404/:',
+    name: '404Resource',
+    component: NotFound,
+    props: true
 
-  // },
+  },
   {
     path: '/:catchAll(.*)',
     name: 'NotFound',
