@@ -31,6 +31,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+        //this.$router.push({name:'404Resourse', params:{resourse:'event'}})
       })
   }
 }

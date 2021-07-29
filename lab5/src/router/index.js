@@ -4,6 +4,7 @@ import About from '../views/About.vue'
 import EventDetails from '../views/event/Details.vue'
 import EventEdit from '../views/event/Edit.vue'
 import EventLayout from '../views/event/Layout.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -41,6 +42,19 @@ const routes = [
         component: EventEdit
       }
     ]
+  },
+  // {
+  //   path:'/404/:resourse',
+  //   name: '404Resourse',
+  //   component: NotFound,
+  //   props: true
+
+  // },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: NotFound,
+    props: true
   }
 ]
 
