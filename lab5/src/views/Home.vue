@@ -7,21 +7,21 @@
 <script>
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
-import EventService from '@/services/PassengerService.js'
+import PassengerService from '@/services/PassengerService.js'
 import { watchEffect } from '@vue/runtime-core'
 // import axios from 'axios'
 export default {
   //name: 'EventList',
-  // props: {
-  //   page: {
-  //     type: Number,
-  //     required: true
-  //   },
-  //   size: {
-  //     type: Number,
-  //     required: true
-  //   }
-  // },
+  props: {
+    page: {
+      type: Number,
+      required: true
+    },
+    perPage: {
+      type: Number,
+      required: true
+    }
+  },
 
   components: {
     EventCard // register it as a child component
@@ -34,7 +34,7 @@ export default {
   },
   created() {
     watchEffect(() => {
-      EventService.getEvents(this.size, this.page)
+      PassengerService.getEvents(this.perPage , this.page)
         .then((response) => {
           this.events = response.data.data
           this.totalEvents = response.headers['x-total-count'] // <-- Store it
@@ -45,14 +45,14 @@ export default {
     })
   },
 
-  computed: {
-    hasNextPage() {
-      //frist, calculate total pages
-      let totalPages = Math.ceil(this.totalEvents / this.size) //2 is event per page
-      //then check to see if the current page is less than th etotal page
-      return this.page < totalPages
-    }
-  }
+  // computed: {
+  //   hasNextPage() {
+  //     //frist, calculate total pages
+  //     let totalPages = Math.ceil(this.totalEvents / this.size) //2 is event per page
+  //     //then check to see if the current page is less than th etotal page
+  //     return this.page < totalPages
+  //   }
+  // }
 }
 </script>
 <style scoped>
