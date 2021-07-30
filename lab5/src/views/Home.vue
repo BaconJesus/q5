@@ -11,17 +11,17 @@ import EventService from '@/services/PassengerService.js'
 import { watchEffect } from '@vue/runtime-core'
 // import axios from 'axios'
 export default {
-  name: 'EventList',
-  props: {
-    page: {
-      type: Number,
-      required: true
-    },
-    size: {
-      type: Number,
-      required: true
-    }
-  },
+  //name: 'EventList',
+  // props: {
+  //   page: {
+  //     type: Number,
+  //     required: true
+  //   },
+  //   size: {
+  //     type: Number,
+  //     required: true
+  //   }
+  // },
 
   components: {
     EventCard // register it as a child component
