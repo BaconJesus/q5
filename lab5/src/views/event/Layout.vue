@@ -31,7 +31,7 @@ export default {
         if (response && response.status == 204) {
           this.$router.push({
             name: '404Resource',
-            params: { resource: 'event' }
+            params: { resource: 'detail' }
           })
         }
       })
