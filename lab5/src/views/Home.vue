@@ -8,8 +8,7 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import PassengerService from '@/services/PassengerService.js'
-import { watchEffect } from '@vue/runtime-core'
-// import axios from 'axios'
+import NProgress from 'nprogress'
 export default {
   //name: 'EventList',
   props: {
@@ -17,10 +16,6 @@ export default {
       type: Number,
       required: true
     },
-    perPage: {
-      type: Number,
-      required: true
-    }
   },
 
   components: {
@@ -32,28 +27,41 @@ export default {
       totalEvents: 0 //added this to store totalEvents
     }
   },
-  created() {
-    watchEffect(() => {
-      PassengerService.getEvents(this.perPage , this.page)
-        .then((response) => {
-          this.events = response.data.data
-          this.totalEvents = response.headers['x-total-count'] // <-- Store it
+ // eslint-disable-next-line no-unused-vars
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    NProgress.start()
+    PassengerService.getEvents(parseInt(routeTo.query.perPage) || 10, parseInt(routeTo.query.page) || 1)
+      .then((response) => {
+        next((comp) => {
+          comp.events = response.data.data
+          comp.totalEvents = response.headers['x-total-count']
         })
-        .catch((error) => {
-          console.log(error)
         })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+    
     })
+      .finally(() =>{
+        NProgress.done()
+      })
   },
-
-  // computed: {
-  //   hasNextPage() {
-  //     //frist, calculate total pages
-  //     let totalPages = Math.ceil(this.totalEvents / this.size) //2 is event per page
-  //     //then check to see if the current page is less than th etotal page
-  //     return this.page < totalPages
-  //   }
-  // }
+  beforeRouteUpdate(routeTo, routeFrom, next) {
+    NProgress.start()
+    PassengerService.getEventsparseInt((routeTo.query.perPage) || 10, parseInt(routeTo.query.page) || 1)
+      .then((response) => {
+        this.events = response.data.data
+        this.totalEvents = response.headers['x-total-count']
+        next()
+      })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+      })
+      .finally(() =>{
+        NProgress.done()
+      })
+  }
 }
+
 </script>
 <style scoped>
 .events {
