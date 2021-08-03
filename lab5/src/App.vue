@@ -1,10 +1,19 @@
 <template>
+<div id="flashMessage" v-if="GStore.flashMessage">
+    {{ GStore.flashMessage }}
+  </div>
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
   <router-view />
 </template>
+
+<script>
+export default {
+  inject: ['GStore']
+}
+</script>
 
 <style>
 #app {
@@ -26,5 +35,18 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+#flashMessage {
+  animation-name: yellowfade;
+  animation-duration: 5s;
 }
 </style>
